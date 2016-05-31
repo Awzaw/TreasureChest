@@ -2,7 +2,6 @@ TreasureChest
 ===========
 
 Idea by b17hata
-
 Inspired by Falkirk's "ChestRefill"
 
 Define chests which auto-refill according to the config.
@@ -11,17 +10,12 @@ Define "chestmodes" with an Item, Amount and Probability for each of the 27 slot
 
 
 /tc list : list all configured treasure chestmodes
-
 /tc common : start using the 'common' setting
-
-
-Run /tc {chestmode} and tap a chest
+/tc {chestmode} and tap a chest
 
 Define the refill rate in seconds in the config.txt file
 
 Install the .phar file, restart, then define your own "chestmodes" in treasure.yml (three are predefined to get you started: common, uncommon and rare), restart again and you are ready to go.
-
-Type /tc list to list all possible chestmodes, or type /tc common to select the 'common' chestmode.
 
 Tap chests to enable automatic refill according to the config in treasure.yml for the chosen chestmode. The format for each chestmode slot must be ID:AMOUNT:PROBABILITY, for example:
 
