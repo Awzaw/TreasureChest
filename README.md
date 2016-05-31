@@ -1,4 +1,5 @@
 TreasureChest
 ===========
 
-Idea by b17hata
+Credit for the Idea by b17hata
+Inspiration and a little code: Falkirks
