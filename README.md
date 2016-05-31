@@ -3,7 +3,7 @@ TreasureChest
 
 Idea by b17hata
 
-Inspired Falkirk's "ChestRefill"
+Inspired by Falkirk's "ChestRefill"
 
 Define chests which auto-refill according to the config.
 
