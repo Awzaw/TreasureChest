@@ -17,6 +17,7 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
 
     private $c;
     public $config;
+    public $treasure;
 
     public function onEnable() {
         $this->c = [];
@@ -40,10 +41,10 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
             switch ($args[0]) {
                 case "list":
                     $sender->sendMessage(TEXTFORMAT::YELLOW . "Chestmodes");
-                    foreach ($this->treasure as $treasure => $value) {
+                    foreach ($this->treasure->getAll() as $treasure => $value) {
                         $sender->sendMessage(TEXTFORMAT::GREEN . $treasure);
                     }
-                    break;
+                    return true;
 
                 //more commands here...
 
