@@ -39,21 +39,22 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
 
             switch ($args[0]) {
                 case "list":
-                    $sender->sendMessage(TEXTFORMAT::YELLOW . "List of Treasure Chest Modes");
+                    $sender->sendMessage(TEXTFORMAT::YELLOW . "Chestmodes");
                     foreach ($this->treasure as $treasure) {
                         $sender->sendMessage(TEXTFORMAT::GREEN . $treasure);
                     }
-
                     break;
+
+                //more commands here...
 
                 default:
                     break;
             }
 
             $this->c[$sender->getName()] = $args[0];
-            $sender->sendMessage(TEXTFORMAT::GREEN . "Touch a chest to make it a treasure chest!");
+            $sender->sendMessage(TEXTFORMAT::GREEN . "Touch a chest to make it a treasure chest");
         } else {
-            $sender->sendMessage(TEXTFORMAT::RED . "Please run command in game.");
+            $sender->sendMessage(TEXTFORMAT::RED . "Please run the command in the game");
         }
         return true;
     }
@@ -66,7 +67,7 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
 
             $this->config->set($event->getBlock()->x . ":" . $event->getBlock()->y . ":" . $event->getBlock()->z . ":" . $event->getPlayer()->getLevel()->getName(), $chestmode);
             $this->config->save();
-            $event->getPlayer()->sendMessage(TEXTFORMAT::RED . "Treasure Chest Created in Mode: " . $chestmode);
+            $event->getPlayer()->sendMessage(TEXTFORMAT::GREEN . "Treasure Chest Created in Mode: " . $chestmode);
             unset($this->c[$event->getPlayer()->getName()]);
         }
     }
