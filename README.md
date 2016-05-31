@@ -1,5 +1,6 @@
 TreasureChest
 ===========
 
-Credit for the Idea by b17hata
-Inspiration: Falkirks ChestRefill
+Idea by b17hata
+
+Inspiration by Falkirk's "ChestRefill"
