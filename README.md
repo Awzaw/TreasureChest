@@ -25,7 +25,7 @@ Type /tc list to list all possible chestmodes, or type /tc common to select the 
 
 Tap chests to enable automatic refill according to the config in treasure.yml for the chosen chestmode. The format for each chestmode slot must be ID : AMOUNT : PROBABILITY, for example:
 
-
+[CODE]
 ---
 common:
  - "104:1:20"
@@ -43,6 +43,6 @@ rare:
  - "25:20:10"
  - "43:1:5"
 ...
-
+[/CODE]
 
 You can define up to 27 slots for each chestmode
