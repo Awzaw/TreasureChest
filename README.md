@@ -10,7 +10,9 @@ Define "chestmodes" with an Item, Amount and Probability for each of the 27 slot
 
 
 /tc list : list all configured treasure chestmodes
+
 /tc common : start using the 'common' setting
+
 /tc {chestmode} and tap a chest
 
 Define the refill rate in seconds in the config.txt file
