@@ -23,7 +23,7 @@ Install the .phar file, restart, then define your own "chestmodes" in treasure.y
 
 Type /tc list to list all possible chestmodes, or type /tc common to select the 'common' chestmode.
 
-Tap chests to enable automatic refill according to the config in treasure.yml for the chosen chestmode. The format for each chestmode slot must be ID : AMOUNT : PROBABILITY, for example:
+Tap chests to enable automatic refill according to the config in treasure.yml for the chosen chestmode. The format for each chestmode slot must be ID:AMOUNT:PROBABILITY, for example:
 
 ```
 ---
