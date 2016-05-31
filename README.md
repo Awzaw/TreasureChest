@@ -3,4 +3,4 @@ TreasureChest
 
 Idea by b17hata
 
-Inspiration by Falkirk's "ChestRefill"
+Inspired Falkirk's "ChestRefill"
