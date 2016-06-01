@@ -21,9 +21,10 @@ class RefillTask extends PluginTask {
                 continue;
             if (!($tile instanceof Chest))
                 continue;
-
+            
+            $tile->getInventory()->clearAll();
             $inv = $tile->getRealInventory();
-
+            
             foreach ($this->getOwner()->treasure->getAll() as $treasure => $tarray) {
 
                 if ($treasure === $chestmode) {
@@ -32,7 +33,7 @@ class RefillTask extends PluginTask {
                         $t = explode(":", $tstring);
 
                         if (mt_rand(0, 100) < $t[2]) {
-                            $inv->setItem($i, new Item($t[0], 0, $t[1]));
+                            $inv->setItem($i, new Item($t[0], 0, mt_rand(0, $t[1])));
                             $i++;
                         }
                     }
