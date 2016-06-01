@@ -1,6 +1,6 @@
 name: TreasureChest
 main: TreasureChest\ChestRefill
-version: 1.0.3
+version: 1.0.4
 author: Awzaw
 api: [2.0.0]
 load: POSTWORLD
