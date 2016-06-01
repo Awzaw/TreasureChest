@@ -16,6 +16,7 @@ use pocketmine\utils\TextFormat;
 class ChestRefill extends PluginBase implements CommandExecutor, Listener {
 
     private $c;
+    public $prefs;
     public $config;
     public $treasure;
 
@@ -28,6 +29,10 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
         $this->getServer()->getScheduler()->scheduleRepeatingTask(new RefillTask($this), file_get_contents($this->getDataFolder() . "/config.txt") * 20);
         $this->config = new Config($this->getDataFolder() . "chests.yml", Config::YAML, array());
         $this->treasure = new Config($this->getDataFolder() . "treasure.yml", Config::YAML, array("common" => array("4:64:80", "5:64:80", "17:64:80"), "uncommon" => array("4:64:40", "5:64:40", "17:64:40"), "rare" => array("264:64:5", "276:1:10", "100:16:20")));
+        $this->prefs = new Config($this->getDataFolder() . "prefs.yml", CONFIG::YAML, array(
+            "RandomizeAmount" => true
+        ));
+
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
 
@@ -46,14 +51,23 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
                     }
                     return true;
 
-                //more commands here...
+                case "off":
+                case "stop":
+                    unset($this->c[$sender->getPlayer()->getName()]);
+                    $sender->sendMessage(TEXTFORMAT::RED . "TreasureChest Tap Mode : OFF");
+
+                    return true;
+
+                    //more commands here...
 
                 default:
                     break;
             }
 
             $this->c[$sender->getName()] = $args[0];
-            $sender->sendMessage(TEXTFORMAT::GREEN . "Touch a chest to make it a treasure chest");
+            $sender->sendMessage(TEXTFORMAT::GREEN . "TreasureChest Tap Mode : ON");
+            $sender->sendMessage(TEXTFORMAT::YELLOW . "Selected ChestMode : $args[0]");
+            $sender->sendMessage(TEXTFORMAT::YELLOW . "Touch chests to convert to treasure chests, type '/tc off' to stop");
         } else {
             $sender->sendMessage(TEXTFORMAT::RED . "Please run the command in the game");
         }
@@ -68,8 +82,8 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
 
             $this->config->set($event->getBlock()->x . ":" . $event->getBlock()->y . ":" . $event->getBlock()->z . ":" . $event->getPlayer()->getLevel()->getName(), $chestmode);
             $this->config->save();
-            $event->getPlayer()->sendMessage(TEXTFORMAT::GREEN . "Treasure Chest Created in Mode: " . $chestmode);
-            unset($this->c[$event->getPlayer()->getName()]);
+            $event->getPlayer()->sendMessage(TEXTFORMAT::GREEN . "Treasure Chest Set to Chestmode: $chestmode");
+            $event->setCancelled(true);
         }
     }
 
