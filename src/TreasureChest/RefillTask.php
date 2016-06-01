@@ -33,7 +33,7 @@ class RefillTask extends PluginTask {
                         $t = explode(":", $tstring);
 
                         if (mt_rand(0, 100) < $t[2]) {
-                            $inv->setItem($i, new Item($t[0], 0, mt_rand(0, $t[1])));
+                            $inv->setItem($i, new Item($t[0], 0, mt_rand(1, $t[1])));
                             $i++;
                         }
                     }
