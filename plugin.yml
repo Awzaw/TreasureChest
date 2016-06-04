@@ -1,6 +1,6 @@
 name: TreasureChest
 main: TreasureChest\ChestRefill
-version: 1.0.5
+version: 1.0.6
 author: Awzaw
 api:
 - 1.13.0
@@ -10,6 +10,8 @@ load: POSTWORLD
 commands:
  tc:
   permission: tc
-  default: op
   description: Add a new treasure chest
   usage: /tc
+permissions:
+   tc:
+    default: op
