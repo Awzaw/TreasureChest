@@ -6,6 +6,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandExecutor;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
+use pocketmine\Server;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\event\Listener;
@@ -75,7 +76,9 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
     }
 
     public function onPlayerInteract(PlayerInteractEvent $event) {
-        if (isset($this->c[$event->getPlayer()->getName()]) && $event->getBlock()->getID() == 54) {
+        if ($event->getBlock()->getID() !== 54) return;
+        
+        if (isset($this->c[$event->getPlayer()->getName()])) {
             $tile = $event->getPlayer()->getLevel()->getTile(new Vector3($event->getBlock()->x, $event->getBlock()->y, $event->getBlock()->z));
 
             $chestmode = $this->c[$event->getPlayer()->getName()];
@@ -84,7 +87,17 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
             $this->config->save();
             $event->getPlayer()->sendMessage(TEXTFORMAT::GREEN . "Treasure Chest Set to Chestmode: $chestmode");
             $event->setCancelled(true);
+            return true;
         }
+//        else{
+//            //GENISYS LIMITED CREATIVE FIX - is Gensisys broken?
+//            $tile = $event->getPlayer()->getLevel()->getTile(new Vector3($event->getBlock()->x, $event->getBlock()->y, $event->getBlock()->z));
+//
+//            echo ("Limited Cmode? " . $event->getPlayer()->getServer()->limitedCreative);
+//            if($event->getPlayer()->isCreative() && $event->getPlayer()->getServer()->limitedCreative){
+//			$event->getPlayer()->addWindow($tile->getInventory());
+//            }
+//        }
     }
 
 }
