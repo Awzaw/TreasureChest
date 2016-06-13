@@ -1,7 +1,7 @@
 TreasureChest
 ===========
 
-Idea by b17hata, Inspired by Falkirk's "ChestRefill"
+Idea by 17bhata, Inspired by Falkirk's "ChestRefill"
 
 Define chests which auto-refill according to the config.
 
