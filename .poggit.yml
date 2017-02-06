@@ -3,5 +3,6 @@ branches: master
 projects:
   TreasureChest:
     path: ""
+    icon: icon.png
     model: default
 ...
