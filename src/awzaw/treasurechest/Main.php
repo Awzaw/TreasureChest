@@ -1,6 +1,6 @@
 <?php
 
-namespace TreasureChest;
+namespace awzaw\treasurechest;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandExecutor;
@@ -14,7 +14,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\math\Vector3;
 use pocketmine\utils\TextFormat;
 
-class ChestRefill extends PluginBase implements CommandExecutor, Listener {
+class Main extends PluginBase implements CommandExecutor, Listener {
 
     private $c;
     public $prefs;
@@ -23,31 +23,31 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
 
     public function onEnable() {
         $this->c = [];
-        if (!is_file($this->getDataFolder() . "/config.txt")) {
+        if(!is_file($this->getDataFolder() . "/config.txt")) {
             @mkdir($this->getDataFolder());
             file_put_contents($this->getDataFolder() . "/config.txt", 60);
         }
         $this->getServer()->getScheduler()->scheduleRepeatingTask(new RefillTask($this), file_get_contents($this->getDataFolder() . "/config.txt") * 20);
-        $this->config = new Config($this->getDataFolder() . "chests.yml", Config::YAML, array());
-        $this->treasure = new Config($this->getDataFolder() . "treasure.yml", Config::YAML, array("common" => array("4:64:80", "5:64:80", "17:64:80"), "uncommon" => array("4:64:40", "5:64:40", "17:64:40"), "rare" => array("264:64:5", "276:1:10", "100:16:20")));
-        $this->prefs = new Config($this->getDataFolder() . "prefs.yml", CONFIG::YAML, array(
+        $this->config = new Config($this->getDataFolder() . "chests.yml", Config::YAML, []);
+        $this->treasure = new Config($this->getDataFolder() . "treasure.yml", Config::YAML, ["common" => ["4:64:80", "5:64:80", "17:64:80"], "uncommon" => ["4:64:40", "5:64:40", "17:64:40"], "rare" => ["264:64:5", "276:1:10", "100:16:20"]]);
+        $this->prefs = new Config($this->getDataFolder() . "prefs.yml", CONFIG::YAML, [
             "RandomizeAmount" => true
-        ));
+        ]);
 
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
 
     public function onCommand(CommandSender $sender, Command $cmd, $label, array $args) {
-        if ($sender instanceof Player) {
-            if (!isset($args[0])) {
-                $sender->sendMessage(TEXTFORMAT::RED . "Please type /tc common||uncommon||rare or /tc list");
+        if($sender instanceof Player) {
+            if(!isset($args[0])) {
+                $sender->sendMessage(TEXTFORMAT::RED . "Please type /tchest common||uncommon||rare or /tchest list");
                 return true;
             }
 
-            switch ($args[0]) {
+            switch($args[0]) {
                 case "list":
                     $sender->sendMessage(TEXTFORMAT::YELLOW . "Chestmodes");
-                    foreach ($this->treasure->getAll() as $treasure => $value) {
+                    foreach($this->treasure->getAll() as $treasure => $value) {
                         $sender->sendMessage(TEXTFORMAT::GREEN . $treasure);
                     }
                     return true;
@@ -55,11 +55,9 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
                 case "off":
                 case "stop":
                     unset($this->c[$sender->getPlayer()->getName()]);
-                    $sender->sendMessage(TEXTFORMAT::RED . "TreasureChest Tap Mode : OFF");
+                    $sender->sendMessage(TEXTFORMAT::RED . "Treasure Chest Tap Mode : OFF");
 
                     return true;
-
-                    //more commands here...
 
                 default:
                     break;
@@ -68,7 +66,7 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
             $this->c[$sender->getName()] = $args[0];
             $sender->sendMessage(TEXTFORMAT::GREEN . "TreasureChest Tap Mode : ON");
             $sender->sendMessage(TEXTFORMAT::YELLOW . "Selected ChestMode : $args[0]");
-            $sender->sendMessage(TEXTFORMAT::YELLOW . "Touch chests to convert to treasure chests, type '/tc off' to stop");
+            $sender->sendMessage(TEXTFORMAT::YELLOW . "Touch chests to convert to Treasure Chests, type '/tchest off' to stop");
         } else {
             $sender->sendMessage(TEXTFORMAT::RED . "Please run the command in the game");
         }
@@ -76,9 +74,9 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
     }
 
     public function onPlayerInteract(PlayerInteractEvent $event) {
-        if ($event->getBlock()->getID() !== 54) return;
-        
-        if (isset($this->c[$event->getPlayer()->getName()])) {
+        if($event->getBlock()->getID() !== 54) return;
+
+        if(isset($this->c[$event->getPlayer()->getName()])) {
             $tile = $event->getPlayer()->getLevel()->getTile(new Vector3($event->getBlock()->x, $event->getBlock()->y, $event->getBlock()->z));
 
             $chestmode = $this->c[$event->getPlayer()->getName()];
@@ -89,15 +87,6 @@ class ChestRefill extends PluginBase implements CommandExecutor, Listener {
             $event->setCancelled(true);
             return true;
         }
-//        else{
-//            //GENISYS LIMITED CREATIVE FIX - is Gensisys broken?
-//            $tile = $event->getPlayer()->getLevel()->getTile(new Vector3($event->getBlock()->x, $event->getBlock()->y, $event->getBlock()->z));
-//
-//            echo ("Limited Cmode? " . $event->getPlayer()->getServer()->limitedCreative);
-//            if($event->getPlayer()->isCreative() && $event->getPlayer()->getServer()->limitedCreative){
-//			$event->getPlayer()->addWindow($tile->getInventory());
-//            }
-//        }
     }
 
 }

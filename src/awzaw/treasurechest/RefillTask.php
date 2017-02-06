@@ -1,6 +1,6 @@
 <?php
 
-namespace TreasureChest;
+namespace awzaw\treasurechest;
 
 use pocketmine\scheduler\PluginTask;
 use pocketmine\math\Vector3;
@@ -45,7 +45,6 @@ class RefillTask extends PluginTask {
                 }
             }
         }
-        //$this->getOwner()->getLogger()->info("Treasure chests have been filled");
     }
 
 }
