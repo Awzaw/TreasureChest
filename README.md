@@ -8,13 +8,13 @@ Define chests which auto-refill according to the config.
 Define "chestmodes" in treasture.yml with an Item, MaxAmount and Probability for each of the 27 slots, and TreasureChest will refill according to that chestmode every x seconds, defined in config.txt
 
 
-/tc list : list all configured treasure chestmodes
+/tchest list : list all configured treasure chestmodes
 
-/tc common : start using the 'common' setting
+/tchest common : start using the 'common' setting
 
-/tc {chestmode} and start tapping chests...
+/tchest {chestmode} and start tapping chests...
 
-/tc off to stop making Treasure Chests
+/tchest off to stop making Treasure Chests
 
 Define the refill rate in seconds in the config.txt file
 
@@ -51,6 +51,6 @@ RandomizeAmount Setting:
 
 In prefs.yml you can define whether the AMOUNT of an item (the second number) is a fixed amount to be added to chests, or a random number between 1 and the amount.
 
-In the last chestmode example, /tc diamond would make treasure chests that have a 5% chance of containing a random number of diamonds between 1 and 64, unless RandomizeAmount was set to false... in which case there would be a 5% chance that 'diamond' treasure chests would be refilled with (always) 64 Diamonds.
+In the last chestmode example, /tchest diamond would make treasure chests that have a 5% chance of containing a random number of diamonds between 1 and 64, unless RandomizeAmount was set to false... in which case there would be a 5% chance that 'diamond' treasure chests would be refilled with (always) 64 Diamonds.
 
 You can define up to 27 slots for each chestmode
