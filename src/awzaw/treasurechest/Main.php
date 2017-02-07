@@ -77,10 +77,7 @@ class Main extends PluginBase implements CommandExecutor, Listener {
         if($event->getBlock()->getID() !== 54) return;
 
         if(isset($this->c[$event->getPlayer()->getName()])) {
-            $tile = $event->getPlayer()->getLevel()->getTile(new Vector3($event->getBlock()->x, $event->getBlock()->y, $event->getBlock()->z));
-
             $chestmode = $this->c[$event->getPlayer()->getName()];
-
             $this->config->set($event->getBlock()->x . ":" . $event->getBlock()->y . ":" . $event->getBlock()->z . ":" . $event->getPlayer()->getLevel()->getName(), $chestmode);
             $this->config->save();
             $event->getPlayer()->sendMessage(TEXTFORMAT::GREEN . "Treasure Chest Set to Chestmode: $chestmode");
