@@ -8,6 +8,7 @@ commands:
  tchest:
   permission: tchest
   description: Add a new treasure chest
+  aliases: ["tc"]
   usage: /tchest
 permissions:
    tchest:
