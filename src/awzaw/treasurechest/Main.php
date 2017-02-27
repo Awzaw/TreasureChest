@@ -13,6 +13,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\math\Vector3;
 use pocketmine\utils\TextFormat;
+use pocketmine\block\BlockIds;
 
 class Main extends PluginBase implements CommandExecutor, Listener {
 
@@ -74,7 +75,8 @@ class Main extends PluginBase implements CommandExecutor, Listener {
     }
 
     public function onPlayerInteract(PlayerInteractEvent $event) {
-        if($event->getBlock()->getID() !== 54) return;
+        if ($event->isCancelled()) return;
+        if($event->getBlock()->getID() !== BlockIds::CHEST) return;
 
         if(isset($this->c[$event->getPlayer()->getName()])) {
             $chestmode = $this->c[$event->getPlayer()->getName()];
