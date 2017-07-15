@@ -2,7 +2,7 @@ name: TreasureChest
 main: awzaw\treasurechest\Main
 version: 1.2.1
 author: Awzaw
-api: [3.0.0-ALPHA5, 3.0.0-ALPHA6]
+api: [3.0.0-ALPHA7]
 load: POSTWORLD
 commands:
  tchest:

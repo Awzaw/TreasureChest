@@ -10,7 +10,7 @@ use pocketmine\level\Level;
 
 class RefillTask extends PluginTask {
 
-    public function onRun($tick) {
+    public function onRun(int $tick) {
 
         foreach ($this->getOwner()->config->getAll() as $c => $chestmode) {
             $c = explode(":", $c);
