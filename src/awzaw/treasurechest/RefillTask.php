@@ -16,7 +16,7 @@ class RefillTask extends PluginTask {
             $c = explode(":", $c);
             if (!(($lev = $this->getOwner()->getServer()->getLevelByName($c[3])) instanceof Level))
                 continue;
-            $tile = $lev->getTile(new Vector3($c[0], $c[1], $c[2]));
+            $tile = $lev->getTile(new Vector3((int) $c[0], (int) $c[1], (int) $c[2]));
             if (!$tile)
                 continue;
             if (!($tile instanceof Chest))
