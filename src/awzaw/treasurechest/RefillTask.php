@@ -2,9 +2,9 @@
 
 namespace awzaw\treasurechest;
 
+use pocketmine\item\ItemFactory;
 use pocketmine\scheduler\PluginTask;
 use pocketmine\math\Vector3;
-use pocketmine\item\Item;
 use pocketmine\tile\Chest;
 use pocketmine\level\Level;
 
@@ -37,7 +37,7 @@ class RefillTask extends PluginTask {
                             $amount = mt_rand(1, $amount);
                         
                         if (mt_rand(0, 100) < $t[2]) {
-                            $inv->setItem($i, new Item($t[0], 0, $amount));
+                            $inv->setItem($i, ItemFactory::get($t[0], 0, $amount));
                             $i++;
                         }
                     }
