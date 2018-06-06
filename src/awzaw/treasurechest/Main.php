@@ -28,7 +28,7 @@ class Main extends PluginBase implements CommandExecutor, Listener {
             @mkdir($this->getDataFolder());
             file_put_contents($this->getDataFolder() . "/config.txt", 60);
         }
-        $this->getServer()->getScheduler()->scheduleRepeatingTask(new RefillTask($this), file_get_contents($this->getDataFolder() . "/config.txt") * 20);
+        $this->getScheduler()->scheduleRepeatingTask(new RefillTask($this), file_get_contents($this->getDataFolder() . "/config.txt") * 20);
         $this->config = new Config($this->getDataFolder() . "chests.yml", Config::YAML, []);
         $this->treasure = new Config($this->getDataFolder() . "treasure.yml", Config::YAML, ["common" => ["4:64:80", "5:64:80", "17:64:80"], "uncommon" => ["4:64:40", "5:64:40", "17:64:40"], "rare" => ["264:64:5", "276:1:10", "100:16:20"]]);
         $this->prefs = new Config($this->getDataFolder() . "prefs.yml", CONFIG::YAML, [
