@@ -97,7 +97,6 @@ class Main extends PluginBase implements CommandExecutor, Listener {
 	}
 
 	public function onBlockBreak(BlockBreakEvent $event) {
-		if($event->isCancelled()) return;
 		if($event->getBlock()->getID() !== BlockIds::CHEST) return;
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
@@ -108,7 +107,6 @@ class Main extends PluginBase implements CommandExecutor, Listener {
 			} else {
 				$this->getChests()->remove($block->x . ":" . $block->y . ":" . $block->z . ":" . $player->getLevel()->getName());
 				$this->getChests()->save();
-				$event->setDrops([]);
 				$player->sendMessage("Treasure Chest Deleted");
 			}
 		}
