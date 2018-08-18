@@ -16,7 +16,7 @@ class RefillTask extends Task {
 
     public function onRun(int $tick) {
 
-        foreach ($this->plugin->config->getAll() as $c => $chestmode) {
+        foreach ($this->plugin->getChests()->getAll() as $c => $chestmode) {
             $c = explode(":", $c);
             if (!(($lev = $this->plugin->getServer()->getLevelByName($c[3])) instanceof Level))
                 continue;

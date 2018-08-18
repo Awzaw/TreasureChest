@@ -5,13 +5,14 @@ namespace awzaw\treasurechest;
 use pocketmine\command\Command;
 use pocketmine\command\CommandExecutor;
 use pocketmine\command\CommandSender;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\Player;
+use pocketmine\scheduler\TaskHandler;
 use pocketmine\Server;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\math\Vector3;
 use pocketmine\utils\TextFormat;
 use pocketmine\block\BlockIds;
 
@@ -19,8 +20,9 @@ class Main extends PluginBase implements CommandExecutor, Listener {
 
     private $c;
     public $prefs;
-    public $config;
+    public $chests;
     public $treasure;
+    private $taskHandler;
 
     public function onEnable() {
         $this->c = [];
@@ -28,8 +30,8 @@ class Main extends PluginBase implements CommandExecutor, Listener {
             @mkdir($this->getDataFolder());
             file_put_contents($this->getDataFolder() . "/config.txt", 60);
         }
-        $this->getScheduler()->scheduleRepeatingTask(new RefillTask($this), file_get_contents($this->getDataFolder() . "/config.txt") * 20);
-        $this->config = new Config($this->getDataFolder() . "chests.yml", Config::YAML, []);
+        $this->taskHandler = $this->getScheduler()->scheduleRepeatingTask(new RefillTask($this), file_get_contents($this->getDataFolder() . "/config.txt") * 20);
+        $this->chests = new Config($this->getDataFolder() . "chests.yml", Config::YAML, []);
         $this->treasure = new Config($this->getDataFolder() . "treasure.yml", Config::YAML, ["common" => ["4:64:80", "5:64:80", "17:64:80"], "uncommon" => ["4:64:40", "5:64:40", "17:64:40"], "rare" => ["264:64:5", "276:1:10", "100:16:20"]]);
         $this->prefs = new Config($this->getDataFolder() . "prefs.yml", CONFIG::YAML, [
             "RandomizeAmount" => true
@@ -74,18 +76,50 @@ class Main extends PluginBase implements CommandExecutor, Listener {
         return true;
     }
 
-    public function onPlayerInteract(PlayerInteractEvent $event) {
-        if ($event->isCancelled()) return;
-        if($event->getBlock()->getID() !== BlockIds::CHEST) return;
+	public function onPlayerInteract(PlayerInteractEvent $event) {
+		if($event->isCancelled()) return;
+		if($event->getBlock()->getID() !== BlockIds::CHEST) return;
+		$player = $event->getPlayer();
+		$block = $event->getBlock();
+		if(isset($this->c[$player->getName()])) {
+			$chestmode = $this->c[$player->getName()];
+			$this->getChests()->set($block->x . ":" . $block->y . ":" . $block->z . ":" . $player->getLevel()->getName(), $chestmode);
+			$this->getChests()->save();
+			$player->sendMessage(TEXTFORMAT::GREEN . "Treasure Chest Set to Chestmode: $chestmode");
+			$event->setCancelled(true);
+			return true;
+		} else {
+			if($this->getChests()->exists($block->x . ":" . $block->y . ":" . $block->z . ":" . $player->getLevel()->getName())) {
+				$nextRun = (int) (($this->getTaskHandler()->getNextRun() - Server::getInstance()->getTick()) / 20);
+				$player->sendTip(TextFormat::GOLD . "Treasure Chests will be refilled in $nextRun seconds...");
+			}
+		}
+	}
 
-        if(isset($this->c[$event->getPlayer()->getName()])) {
-            $chestmode = $this->c[$event->getPlayer()->getName()];
-            $this->config->set($event->getBlock()->x . ":" . $event->getBlock()->y . ":" . $event->getBlock()->z . ":" . $event->getPlayer()->getLevel()->getName(), $chestmode);
-            $this->config->save();
-            $event->getPlayer()->sendMessage(TEXTFORMAT::GREEN . "Treasure Chest Set to Chestmode: $chestmode");
-            $event->setCancelled(true);
-            return true;
-        }
-    }
+	public function onBlockBreak(BlockBreakEvent $event) {
+		if($event->isCancelled()) return;
+		if($event->getBlock()->getID() !== BlockIds::CHEST) return;
+		$player = $event->getPlayer();
+		$block = $event->getBlock();
+		if($this->getChests()->exists($block->x . ":" . $block->y . ":" . $block->z . ":" . $player->getLevel()->getName())) {
+			if(!$player->isOp()) {
+				$player->sendMessage("Only OP can break Treasure Chests");
+				$event->setCancelled();
+			} else {
+				$this->getChests()->remove($block->x . ":" . $block->y . ":" . $block->z . ":" . $player->getLevel()->getName());
+				$this->getChests()->save();
+				$event->setDrops([]);
+				$player->sendMessage("Treasure Chest Deleted");
+			}
+		}
+	}
+
+	public function getChests() : Config {
+    	return $this->chests;
+	}
+
+	public function getTaskHandler() : TaskHandler {
+		return $this->taskHandler;
+	}
 
 }
